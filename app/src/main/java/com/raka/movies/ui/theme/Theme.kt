@@ -1,4 +1,4 @@
-package com.raka.spacex.ui.theme
+package com.raka.movies.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

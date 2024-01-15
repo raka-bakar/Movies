@@ -1,4 +1,4 @@
-package com.raka.spacex
+package com.raka.movies
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
