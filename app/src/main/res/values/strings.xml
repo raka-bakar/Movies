@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="default_name">John Doe</string>
+    <string name="greetings">Hello</string>
+    <string name="see_all">See all</string>
+    <string name="all_movies">All Movies</string>
+    <string name="search">Search</string>
+    <string name="error_message">Data not found</string>
+    <string name="date_movie_detail">%s . %dh %dm </string>
+    <string name="budget_currency">$ %s </string>
+    <string name="rating_fact">%s (%d)</string>
+    <string name="overview">Overview</string>
+    <string name="key_fact">Key Facts</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="rating">Rating</string>
+    <string name="language">Original Language</string>
+    <string name="your_favourite">
+     <![CDATA[
+  YOUR <b>FAVORITE</b>
+    ]]>
+</string>
+    <string name="our_staff_pick">
+     <![CDATA[
+  OUR <b>STAFF PICKS</b>
+    ]]>
+</string>
+    <string name="image_desc">Image</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>

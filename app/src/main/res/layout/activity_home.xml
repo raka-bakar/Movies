@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.home.HomeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="@dimen/icon_size_medium"
+            android:layout_marginStart="@dimen/page_margin_start_end"
+            android:layout_marginTop="@dimen/page_margin_top"
+            android:padding="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp" />
+
+        <TextView
+            android:id="@+id/tv_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_small"
+            android:layout_marginTop="@dimen/page_margin_top"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toEndOf="@+id/iv_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Hello" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            style="@style/UsernameProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_small"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/iv_profile"
+            app:layout_constraintTop_toBottomOf="@+id/tv_greeting"
+            tools:text="John Doe" />
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="@dimen/icon_size_medium"
+            android:layout_marginTop="@dimen/page_margin_top"
+            android:layout_marginEnd="@dimen/page_margin_start_end"
+            android:background="@drawable/round_corner"
+            android:contentDescription="@string/image_desc"
+            android:src="@drawable/ic_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/page_margin_start_end"
+            android:layout_marginTop="@dimen/subtitle_margin_top"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile"
+            tools:text="YOUR FAVORITES" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rv_favorite_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_favorites" />
+
+        <TextView
+            android:id="@+id/tv_title_staff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/page_margin_start_end"
+            android:layout_marginTop="@dimen/btn_favorite_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_favorites"
+            tools:text="OUR STAFF PICKS" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_staff_picks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/page_margin_start_end"
+            android:layout_marginTop="@dimen/text_year_margin_top"
+            android:layout_marginEnd="@dimen/page_margin_start_end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_staff" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

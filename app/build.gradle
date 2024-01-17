@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.raka.movies"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -39,6 +39,10 @@ android {
     buildFeatures {
         compose true
     }
+
+    viewBinding {
+        enabled = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
@@ -63,6 +67,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation("androidx.compose.material:material:1.5.4")
 
     // navigation
     implementation 'androidx.navigation:navigation-compose:2.5.3'
@@ -84,14 +89,23 @@ dependencies {
     // gson
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    // coil
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation "io.coil-kt:coil-compose:2.5.0"
+
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation platform('androidx.compose:compose-bom:2023.03.00')
+    implementation 'androidx.compose.ui:ui-graphics'
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.03.00')
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
     // dagger hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-android-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:2.48"
+    kapt "com.google.dagger:hilt-android-compiler:2.48"
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
 

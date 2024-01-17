@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_size_medium">48dp</dimen>
+    <dimen name="page_margin_top">58dp</dimen>
+    <dimen name="page_margin_start_end">30dp</dimen>
+    <dimen name="subtitle_margin_top">52dp</dimen>
+    <dimen name="rv_favorite_margin">21dp</dimen>
+    <dimen name="item_favorite_height">270dp</dimen>
+    <dimen name="item_favorite_width">182dp</dimen>
+    <dimen name="item_favorite_border_radius">14dp</dimen>
+    <dimen name="item_favorite_elevation">5dp</dimen>
+
+
+    <dimen name="margin_size_small">8dp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small_medium">14sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+
+    <dimen name="poster_width">69dp</dimen>
+    <dimen name="poster_height">89dp</dimen>
+    <dimen name="poster_margin_bottom">25dp</dimen>
+    <dimen name="text_year_margin_top">27dp</dimen>
+    <dimen name="text_year_margin_start">26dp</dimen>
+    <dimen name="btn_favorite_margin">41dp</dimen>
+    <dimen name="btn_corner_radius">20dp</dimen>
+    <dimen name="search_bar_margin">35dp</dimen>
+    <dimen name="search_bar_margin_top">29dp</dimen>
+
+    <dimen name="poster_detail_width">203dp</dimen>
+    <dimen name="poster_detail_height">295dp</dimen>
+    <dimen name="poster_detail_margin">40dp</dimen>
+    <dimen name="rating_detail_margin">18dp</dimen>
+    <dimen name="date_detail_margin">12dp</dimen>
+    <dimen name="key_fact_margin">5dp</dimen>
+    <dimen name="key_fact_margin_end">10dp</dimen>
+
+</resources>
