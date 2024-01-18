@@ -1,11 +1,7 @@
 package com.raka.movies.di
 
 import android.content.Context
-import androidx.room.Room
-import com.raka.movies.data.DataSource
-import com.raka.movies.data.DataSourceImpl
-import com.raka.movies.data.db.Constants.DB
-import com.raka.movies.data.db.MovieDb
+import com.movies.DataProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,15 +21,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideDataSource(@ApplicationContext context: Context): DataSource =
-        DataSourceImpl(context)
-
-    @Singleton
-    @Provides
-    fun provideMovieDb(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, MovieDb::class.java, DB).build()
-
-    @Singleton
-    @Provides
-    fun provideMovieBookmarDao(movieDb: MovieDb) = movieDb.movieBookmarkDao()
+    fun provideDataProvider(@ApplicationContext context: Context): DataProvider {
+        return DataProvider(context)
+    }
 }

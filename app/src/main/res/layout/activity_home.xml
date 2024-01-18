@@ -21,8 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:strokeColor="@color/black"
-            app:strokeWidth="1dp" />
+             />
 
         <TextView
             android:id="@+id/tv_greeting"

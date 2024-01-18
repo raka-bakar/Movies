@@ -2,6 +2,7 @@ package com.raka.movies.ui.detail
 
 import android.os.Bundle
 import android.text.Html
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -9,13 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.movies.data.CallResult
 import com.raka.movies.R
-import com.raka.movies.data.CallResult
-import com.raka.movies.data.model.MovieItemCompact
 import com.raka.movies.databinding.ActivityDetailBinding
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.home.HomeMovieAdapter
-import com.raka.movies.utils.currencyFormatter
-import com.raka.movies.utils.formatLanguage
+import com.raka.movies.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,8 @@ class DetailActivity : AppCompatActivity() {
                         rating = result.data?.rating.toString(),
                         review = result.data?.reviews ?: 0
                     )
-                } else {
+                } else if (result is CallResult.Error) {
+                    Toast.makeText(this@DetailActivity, result.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -78,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setClickListener(itemMovie: MovieItemCompact?) {
         if (itemMovie != null) {
             binding.btnBookmark.setOnClickListener {
-                viewModel.addBookmark(itemMovie)
+                viewModel.onBookmarkClicked(itemMovie)
             }
         }
         binding.btnClose.setOnClickListener {
@@ -163,7 +164,10 @@ class DetailActivity : AppCompatActivity() {
      */
     private fun setBudget(budget: Int?) {
         binding.tvBudget.text =
-            resources.getString(R.string.budget_currency, currencyFormatter(budget.toString()))
+            resources.getString(
+                R.string.budget_currency,
+                Utils.currencyFormatter(budget.toString())
+            )
     }
 
     /**
@@ -172,7 +176,10 @@ class DetailActivity : AppCompatActivity() {
      */
     private fun setRevenue(revenue: Int?) {
         binding.tvRevenue.text =
-            resources.getString(R.string.budget_currency, currencyFormatter(revenue.toString()))
+            resources.getString(
+                R.string.budget_currency,
+                Utils.currencyFormatter(revenue.toString())
+            )
     }
 
     /**
@@ -180,7 +187,7 @@ class DetailActivity : AppCompatActivity() {
      *  @param language of String
      */
     private fun setLanguage(language: String?) {
-        binding.tvLanguage.text = formatLanguage(language?:"")
+        binding.tvLanguage.text = Utils.formatLanguage(language ?: "")
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.raka.movies.domain.usecase
 
-import com.raka.movies.data.CallResult
-import com.raka.movies.data.model.MovieItemCompact
-import com.raka.movies.data.repository.MoviesRepository
+import com.movies.data.CallResult
+import com.raka.movies.model.MovieItemCompact
+import com.raka.movies.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

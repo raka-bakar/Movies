@@ -8,13 +8,13 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.movies.data.CallResult
 import com.raka.movies.R
-import com.raka.movies.data.CallResult
-import com.raka.movies.data.model.MovieItemCompact
 import com.raka.movies.databinding.ActivityHomeBinding
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.detail.DetailActivity
 import com.raka.movies.ui.search.SearchActivity
-import com.raka.movies.utils.getEmojiByUnicode
+import com.raka.movies.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -96,7 +96,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupStaffPickRecyclerView(list: List<MovieItemCompact>) {
         binding.rvStaffPicks.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = HomeMovieAdapter(list, viewModel::addBookmark) {
+            adapter = HomeMovieAdapter(list, viewModel::onBookmarkClicked) {
                 val intent = Intent(this@HomeActivity, DetailActivity::class.java)
                 intent.putExtra("movieId", it)
                 startActivity(intent)
@@ -109,8 +109,8 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun setProfile() {
         binding.ivProfile.background =
-            AppCompatResources.getDrawable(this, R.drawable.avatar_profile)
-        val greeting = getString(R.string.greetings) + getEmojiByUnicode(waveEmoji)
+            AppCompatResources.getDrawable(this, R.drawable.avatar_boy_male)
+        val greeting = getString(R.string.greetings) + Utils.getEmojiByUnicode(waveEmoji)
         binding.tvGreeting.text = greeting
         binding.tvUsername.text = getString(R.string.default_name)
         binding.tvFavorites.text = HtmlCompat.fromHtml(

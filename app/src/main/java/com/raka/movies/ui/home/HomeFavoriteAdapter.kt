@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import coil.load
-import com.raka.movies.data.model.MovieItemCompact
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.databinding.ItemFavoriteBinding
 import com.raka.movies.databinding.ItemFavoriteLastBinding
 

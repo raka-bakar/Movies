@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.raka.movies.R
-import com.raka.movies.data.model.MovieItemCompact
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.databinding.ItemMovieBinding
 
 class SearchAdapter(

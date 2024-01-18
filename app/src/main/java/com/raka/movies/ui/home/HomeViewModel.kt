@@ -2,10 +2,10 @@ package com.raka.movies.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raka.movies.data.CallResult
-import com.raka.movies.data.model.MovieItemCompact
+import com.movies.data.CallResult
 import com.raka.movies.domain.usecase.BookmarkUseCase
 import com.raka.movies.domain.usecase.MoviesUseCase
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.utils.RefreshFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
             .stateIn(viewModelScope + dispatcherIo, SharingStarted.Eagerly, CallResult.Initial())
     }
 
-    fun addBookmark(movie: MovieItemCompact) {
+    fun onBookmarkClicked(movie: MovieItemCompact) {
         viewModelScope.launch(Dispatchers.IO) {
             movie.isBookmarked = !movie.isBookmarked
             if (movie.isBookmarked) {

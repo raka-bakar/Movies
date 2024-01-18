@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.raka.movies.data.CallResult
-import com.raka.movies.data.model.MovieItemCompact
+import com.movies.data.CallResult
+import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.databinding.ActivitySearchBinding
 import com.raka.movies.ui.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,7 +70,7 @@ class SearchActivity : AppCompatActivity() {
      *  @param list of the MovieItemCompact
      */
     private fun setupFavouriteRecyclerView(list: List<MovieItemCompact>) {
-        searchAdapter = SearchAdapter(list, viewModel::addBookmark) {
+        searchAdapter = SearchAdapter(list, viewModel::onBookmarkClicked) {
             val intent = Intent(this@SearchActivity, DetailActivity::class.java)
             intent.putExtra("movieId", it)
             startActivity(intent)
