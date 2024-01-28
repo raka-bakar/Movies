@@ -125,6 +125,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_key"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:baselineAligned="false"
             android:layout_marginTop="@dimen/date_detail_margin"
             android:layout_marginEnd="@dimen/page_margin_start_end"
             android:layout_marginStart="@dimen/page_margin_start_end"
@@ -189,6 +190,7 @@
             android:layout_marginTop="@dimen/date_detail_margin"
             android:layout_marginEnd="@dimen/page_margin_start_end"
             android:layout_marginStart="@dimen/page_margin_start_end"
+            android:baselineAligned="false"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

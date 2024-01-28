@@ -1,30 +1,36 @@
 package com.raka.movies.ui.search
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movies.data.CallResult
+import com.raka.movies.R
+import com.raka.movies.databinding.FragmentSearchBinding
 import com.raka.movies.model.MovieItemCompact
-import com.raka.movies.databinding.ActivitySearchBinding
-import com.raka.movies.ui.detail.DetailActivity
+import com.raka.movies.ui.detail.DetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var searchAdapter: SearchAdapter
-    private val viewModel: SearchViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private val viewModel: SearchViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         lifecycleScope.launch {
             viewModel.movieList.data.collect {
@@ -44,8 +50,9 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        binding.ivBack.setOnClickListener { finish() }
+        binding.ivBack.setOnClickListener { activity?.supportFragmentManager?.popBackStack() }
         setupSearchView()
+        return binding.root
     }
 
     /**
@@ -71,9 +78,11 @@ class SearchActivity : AppCompatActivity() {
      */
     private fun setupFavouriteRecyclerView(list: List<MovieItemCompact>) {
         searchAdapter = SearchAdapter(list, viewModel::onBookmarkClicked) {
-            val intent = Intent(this@SearchActivity, DetailActivity::class.java)
-            intent.putExtra("movieId", it)
-            startActivity(intent)
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.frameContainerView, DetailFragment.newInstance(it))
+                addToBackStack(null)
+                commit()
+            }
         }
         binding.rvAllMovies.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -84,5 +93,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.movieList.refresh()
+    }
+
+    companion object {
+        fun newInstance() = SearchFragment()
     }
 }

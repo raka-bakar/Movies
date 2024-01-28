@@ -2,17 +2,21 @@ package com.raka.movies.ui.detail
 
 import android.os.Bundle
 import android.text.Html
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.movies.data.CallResult
 import com.raka.movies.R
-import com.raka.movies.databinding.ActivityDetailBinding
+import com.raka.movies.databinding.FragmentDetailBinding
 import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.home.HomeMovieAdapter
 import com.raka.movies.utils.Utils
@@ -20,17 +24,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
-    private val viewModel: DetailViewModel by viewModels()
-    private lateinit var binding: ActivityDetailBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
+class DetailFragment : Fragment() {
+    private val viewModel: DetailViewModel by activityViewModels()
+    private lateinit var binding: FragmentDetailBinding
 
-        setContentView(binding.root)
+    private val idMovie: Int
+        get() = requireArguments().getInt(ARG_ID_MOVIE)
 
-        val movieId = intent.getIntExtra("movieId", 0)
-        viewModel.getMovie(movieId)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        viewModel.getMovie(idMovie)
 
         lifecycleScope.launch {
             viewModel._movie.collect { result ->
@@ -56,10 +63,15 @@ class DetailActivity : AppCompatActivity() {
                         review = result.data?.reviews ?: 0
                     )
                 } else if (result is CallResult.Error) {
-                    Toast.makeText(this@DetailActivity, result.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DetailFragment.context,
+                        result.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
+        return binding.root
     }
 
     /**
@@ -83,7 +95,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         binding.btnClose.setOnClickListener {
-            finish()
+            activity?.supportFragmentManager?.popBackStack()
         }
     }
 
@@ -201,5 +213,11 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val HOUR = 60
+        private const val ARG_ID_MOVIE = "argIdMovie"
+        fun newInstance(id: Int) = DetailFragment().apply {
+            arguments = bundleOf(
+                ARG_ID_MOVIE to id
+            )
+        }
     }
 }

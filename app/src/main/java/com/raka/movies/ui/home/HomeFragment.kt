@@ -1,35 +1,38 @@
 package com.raka.movies.ui.home
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movies.data.CallResult
 import com.raka.movies.R
-import com.raka.movies.databinding.ActivityHomeBinding
+import com.raka.movies.databinding.FragmentHomeBinding
 import com.raka.movies.model.MovieItemCompact
-import com.raka.movies.ui.detail.DetailActivity
-import com.raka.movies.ui.search.SearchActivity
+import com.raka.movies.ui.detail.DetailFragment
+import com.raka.movies.ui.search.SearchFragment
 import com.raka.movies.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
 
-    private lateinit var binding: ActivityHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+    private lateinit var binding: FragmentHomeBinding
+    private val viewModel: HomeViewModel by activityViewModels()
 
-        setContentView(binding.root)
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         setProfile()
         lifecycleScope.launch {
             viewModel.favouriteMoviesList.data.collect {
@@ -66,6 +69,7 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+        return binding.root
     }
 
     override fun onResume() {
@@ -82,24 +86,28 @@ class HomeActivity : AppCompatActivity() {
         binding.rvFavorites.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = HomeFavoriteAdapter(list) {
-                val intent = Intent(this@HomeActivity, DetailActivity::class.java)
-                intent.putExtra("movieId", it.id)
-                startActivity(intent)
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.frameContainerView, DetailFragment.newInstance(it.id))
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
     }
 
     /**
      *  Setup Favourite Movie list recyclerview
-     *  @param link of the MovieItemCompact
+     *  @param list of the MovieItemCompact
      */
     private fun setupStaffPickRecyclerView(list: List<MovieItemCompact>) {
         binding.rvStaffPicks.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = HomeMovieAdapter(list, viewModel::onBookmarkClicked) {
-                val intent = Intent(this@HomeActivity, DetailActivity::class.java)
-                intent.putExtra("movieId", it)
-                startActivity(intent)
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.frameContainerView, DetailFragment.newInstance(it))
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
     }
@@ -109,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun setProfile() {
         binding.ivProfile.background =
-            AppCompatResources.getDrawable(this, R.drawable.avatar_boy_male)
+            context?.let { AppCompatResources.getDrawable(it, R.drawable.avatar_boy_male) }
         val greeting = getString(R.string.greetings) + Utils.getEmojiByUnicode(waveEmoji)
         binding.tvGreeting.text = greeting
         binding.tvUsername.text = getString(R.string.default_name)
@@ -122,8 +130,11 @@ class HomeActivity : AppCompatActivity() {
             HtmlCompat.FROM_HTML_MODE_COMPACT
         )
         binding.btnSearch.setOnClickListener {
-            val intent = Intent(this, SearchActivity::class.java)
-            startActivity(intent)
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.frameContainerView, SearchFragment.newInstance())
+                addToBackStack(null)
+                commit()
+            }
         }
     }
 
