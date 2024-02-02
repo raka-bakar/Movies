@@ -1,7 +1,9 @@
 package com.raka.movies
 
-import com.raka.movies.domain.usecase.BookmarkUseCase
-import com.raka.movies.domain.usecase.MoviesUseCase
+import com.raka.movies.domain.usecase.bookmark.BookmarkMovieUseCase
+import com.raka.movies.domain.usecase.bookmark.GetBookmarkedMovies
+import com.raka.movies.domain.usecase.bookmark.UnbookmarkMovieUseCase
+import com.raka.movies.domain.usecase.movies.GetStaffPickListUseCase
 import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.home.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,8 +16,10 @@ import org.mockito.kotlin.verify
 
 class HomeViewModelTest {
 
-    private val movieUseCase = Mockito.mock(MoviesUseCase::class.java)
-    private val bookmarkUseCase = Mockito.mock(BookmarkUseCase::class.java)
+    private val getStaffPickListUseCase = Mockito.mock(GetStaffPickListUseCase::class.java)
+    private val bookmarkMovieUseCase = Mockito.mock(BookmarkMovieUseCase::class.java)
+    private val unbookmarkMovieUseCase = Mockito.mock(UnbookmarkMovieUseCase::class.java)
+    private val getBookmarkedMoviesUseCase = Mockito.mock(GetBookmarkedMovies::class.java)
 
     private lateinit var sut: HomeViewModel
 
@@ -23,9 +27,11 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         sut = HomeViewModel(
-            moviesUseCase = movieUseCase,
-            bookmarkUseCase = bookmarkUseCase,
-            dispatcherIo = UnconfinedTestDispatcher()
+            getStaffPickListUseCase = getStaffPickListUseCase,
+            bookmarkMovieUseCase = bookmarkMovieUseCase,
+            dispatcherIo = UnconfinedTestDispatcher(),
+            unbookmarkMovieUseCase = unbookmarkMovieUseCase,
+            getBookmarkedMovies = getBookmarkedMoviesUseCase
         )
     }
 
@@ -47,7 +53,7 @@ class HomeViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).unBookmarkMovie(movie)
+        verify(unbookmarkMovieUseCase).unBookmarkMovie(movie)
     }
 
     @Test
@@ -68,6 +74,6 @@ class HomeViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).bookmarkMovie(movie)
+        verify(bookmarkMovieUseCase).bookmarkMovie(movie)
     }
 }

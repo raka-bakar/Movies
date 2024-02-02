@@ -1,8 +1,9 @@
 package com.raka.movies
 
 import com.movies.data.CallResult
-import com.raka.movies.domain.usecase.BookmarkUseCase
-import com.raka.movies.domain.usecase.MoviesUseCase
+import com.raka.movies.domain.usecase.bookmark.BookmarkMovieUseCase
+import com.raka.movies.domain.usecase.bookmark.UnbookmarkMovieUseCase
+import com.raka.movies.domain.usecase.movies.GetMovieUseCase
 import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.detail.DetailViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,8 +17,9 @@ import org.mockito.Mockito
 import org.mockito.kotlin.verify
 
 class DetailViewModelTest {
-    private val movieUseCase = Mockito.mock(MoviesUseCase::class.java)
-    private val bookmarkUseCase = Mockito.mock(BookmarkUseCase::class.java)
+    private val getMovieUseCase = Mockito.mock(GetMovieUseCase::class.java)
+    private val bookmarkMovieUseCase = Mockito.mock(BookmarkMovieUseCase::class.java)
+    private val unbookmarkMovieUseCase = Mockito.mock(UnbookmarkMovieUseCase::class.java)
 
     private lateinit var sut: DetailViewModel
 
@@ -25,9 +27,10 @@ class DetailViewModelTest {
     @Before
     fun setup() {
         sut = DetailViewModel(
-            moviesUseCase = movieUseCase,
-            bookmarkUseCase = bookmarkUseCase,
-            dispatcherIo = UnconfinedTestDispatcher()
+            getMovieUseCase = getMovieUseCase,
+            bookmarkMovieUseCase = bookmarkMovieUseCase,
+            dispatcherIo = UnconfinedTestDispatcher(),
+            unbookmarkMovieUseCase = unbookmarkMovieUseCase
         )
     }
 
@@ -50,24 +53,24 @@ class DetailViewModelTest {
         )
         val expected = CallResult.Success(movie)
         Mockito.`when`(
-            movieUseCase.getMovie(1)
+            getMovieUseCase.getMovie(1)
         ).thenReturn(flow {
             emit(CallResult.Success(movie))
         })
         sut.getMovie(1)
-        val result = sut._movie.value
+        val result = sut.movie.value
         Assert.assertEquals(expected.data?.title, result.data?.title)
     }
 
     @Test
     fun `data is null when CallResult is Error`() = runBlocking {
         Mockito.`when`(
-            movieUseCase.getMovie(1)
+            getMovieUseCase.getMovie(1)
         ).thenReturn(flow {
             emit(CallResult.Error("error", null))
         })
         sut.getMovie(1)
-        val result = sut._movie.value
+        val result = sut.movie.value
         Assert.assertEquals(null, result.data)
     }
 
@@ -89,7 +92,7 @@ class DetailViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).unBookmarkMovie(movie)
+        verify(unbookmarkMovieUseCase).unBookmarkMovie(movie)
     }
 
     @Test
@@ -110,6 +113,6 @@ class DetailViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).bookmarkMovie(movie)
+        verify(bookmarkMovieUseCase).bookmarkMovie(movie)
     }
 }

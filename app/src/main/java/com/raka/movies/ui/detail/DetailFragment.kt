@@ -40,7 +40,7 @@ class DetailFragment : Fragment() {
         viewModel.getMovie(idMovie)
 
         lifecycleScope.launch {
-            viewModel._movie.collect { result ->
+            viewModel.movie.collect { result ->
                 if (result is CallResult.Success) {
                     result.data?.isBookmarked?.let {
                         setBookmarkIcon(it)

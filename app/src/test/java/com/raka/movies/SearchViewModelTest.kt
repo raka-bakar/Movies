@@ -1,7 +1,8 @@
 package com.raka.movies
 
-import com.raka.movies.domain.usecase.BookmarkUseCase
-import com.raka.movies.domain.usecase.MoviesUseCase
+import com.raka.movies.domain.usecase.bookmark.BookmarkMovieUseCase
+import com.raka.movies.domain.usecase.bookmark.UnbookmarkMovieUseCase
+import com.raka.movies.domain.usecase.movies.GetMoviesListUseCase
 import com.raka.movies.model.MovieItemCompact
 import com.raka.movies.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,8 +14,9 @@ import org.mockito.Mockito
 import org.mockito.kotlin.verify
 
 class SearchViewModelTest {
-    private val movieUseCase = Mockito.mock(MoviesUseCase::class.java)
-    private val bookmarkUseCase = Mockito.mock(BookmarkUseCase::class.java)
+    private val getMoviesListUseCase = Mockito.mock(GetMoviesListUseCase::class.java)
+    private val unbookmarkMovieUseCase = Mockito.mock(UnbookmarkMovieUseCase::class.java)
+    private val bookmarkMovieUseCase = Mockito.mock(BookmarkMovieUseCase::class.java)
 
     private lateinit var sut: SearchViewModel
 
@@ -22,9 +24,10 @@ class SearchViewModelTest {
     @Before
     fun setup() {
         sut = SearchViewModel(
-            moviesUseCase = movieUseCase,
-            bookmarkUseCase = bookmarkUseCase,
-            dispatcherIo = UnconfinedTestDispatcher()
+            getMoviesListUseCase = getMoviesListUseCase,
+            unbookmarkMovieUseCase = unbookmarkMovieUseCase,
+            dispatcherIo = UnconfinedTestDispatcher(),
+            bookmarkMovieUseCase = bookmarkMovieUseCase,
         )
     }
 
@@ -46,7 +49,7 @@ class SearchViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).unBookmarkMovie(movie)
+        verify(unbookmarkMovieUseCase).unBookmarkMovie(movie)
     }
 
     @Test
@@ -67,6 +70,6 @@ class SearchViewModelTest {
             runtime = 10
         )
         sut.onBookmarkClicked(movie)
-        verify(bookmarkUseCase).bookmarkMovie(movie)
+        verify(bookmarkMovieUseCase).bookmarkMovie(movie)
     }
 }
