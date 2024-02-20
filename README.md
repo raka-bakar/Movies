@@ -14,14 +14,16 @@ Staff choices of movies
 
 
 techstack : 
-1. Kotlin Coroutine
-2. Kotlin Flow
-3. Gson
-4. Coil
-5. Dagger Hilt and Dagger 2
-6. Room database
-7. Mockito
-8. Timber
+1. Jetpack Compose
+2. Jetpack Navigation
+3. Kotlin Coroutine
+4. Kotlin Flow
+5. Gson
+6. Coil
+7. Dagger Hilt and Dagger 2
+8. Room database
+9. Mockito
+10. Timber
 
 Screenshots : 
 
