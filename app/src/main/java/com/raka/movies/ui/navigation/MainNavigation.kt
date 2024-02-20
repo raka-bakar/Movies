@@ -1,9 +1,12 @@
 package com.raka.movies.ui.navigation
 
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.movies.data.CallResult
 import com.raka.movies.ui.detail.DetailScreen
 import com.raka.movies.ui.detail.DetailViewModel
 import com.raka.movies.ui.home.HomeScreen
@@ -32,7 +35,10 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
         override fun compose(controller: NavController) {
             composable(route = getFullRoute(), arguments = getArguments()) {
                 val viewModel: HomeViewModel = hiltViewModel()
-                HomeScreen()
+                val callResult by viewModel.favouriteMoviesList.data.collectAsStateWithLifecycle(
+                    initialValue = CallResult.Initial()
+                )
+                HomeScreen(callResult = callResult)
             }
         }
     }
