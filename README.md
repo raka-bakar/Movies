@@ -24,6 +24,7 @@ techstack :
 8. Timber
 
 Screenshots : 
+
 ![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055822.png)
 ![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055829.png)
 ![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055840.png)
