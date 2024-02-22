@@ -15,15 +15,21 @@
     <string name="revenue">Revenue</string>
     <string name="rating">Rating</string>
     <string name="language">Original Language</string>
-    <string name="your_favourite">
-     <![CDATA[
-  YOUR <b>FAVORITE</b>
-    ]]>
+    <string name="your">
+     YOUR
+</string>
+    <string name="favourite">
+     FAVOURITE
 </string>
     <string name="our_staff_pick">
      <![CDATA[
   OUR <b>STAFF PICKS</b>
     ]]>
+</string>
+    <string name="our">
+    OUR
+</string><string name="staff_pick">
+    STAFF PICK
 </string>
     <string name="image_desc">Image</string>
     <string name="title_activity_detail">DetailActivity</string>

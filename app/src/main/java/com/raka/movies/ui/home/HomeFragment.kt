@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
         binding.tvGreeting.text = greeting
         binding.tvUsername.text = getString(R.string.default_name)
         binding.tvFavorites.text = HtmlCompat.fromHtml(
-            getString(R.string.your_favourite),
+            getString(R.string.your),
             HtmlCompat.FROM_HTML_MODE_COMPACT
         )
         binding.tvTitleStaff.text = HtmlCompat.fromHtml(

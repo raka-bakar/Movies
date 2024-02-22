@@ -18,6 +18,7 @@
     <dimen name="text_size_large">24sp</dimen>
 
     <dimen name="poster_width">69dp</dimen>
+    <dimen name="label_small_margin">2dp</dimen>
     <dimen name="poster_height">89dp</dimen>
     <dimen name="poster_margin_bottom">25dp</dimen>
     <dimen name="text_year_margin_top">27dp</dimen>
