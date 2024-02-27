@@ -125,7 +125,7 @@ class MoviesRepositoryImpl @Inject constructor(
             dataProvider.getBookmarkedMovies().collect { result ->
                 if (result is CallResult.Success) {
                     val compactList = result.data?.map { Utils.toMovieItemCompact(it) }
-                    if (compactList != null) {
+                    if (!compactList.isNullOrEmpty()) {
                         emit(CallResult.Success(compactList))
                     } else {
                         emit(CallResult.Error("Data not found"))

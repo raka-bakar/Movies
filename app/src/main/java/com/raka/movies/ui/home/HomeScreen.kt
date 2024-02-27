@@ -1,5 +1,6 @@
 package com.raka.movies.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,10 +36,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ fun HomeScreen(
     callResultFavorite: CallResult<List<MovieItemCompact>>,
     callResultStaff: CallResult<List<MovieItemCompact>>,
     onBookmarkClicked: (MovieItemCompact) -> Unit,
+    toSearchScreen: () -> Unit,
     toDetailScreen: (Int) -> Unit
 ) {
     val greeting = stringResource(R.string.greetings) + Utils.getEmojiByUnicode(waveEmoji)
@@ -82,6 +84,7 @@ fun HomeScreen(
                     )
                     .height(dimensionResource(id = R.dimen.icon_size_medium))
                     .width(dimensionResource(id = R.dimen.icon_size_medium))
+                    .testTag("imageProfile")
 
             )
             Column(
@@ -96,7 +99,7 @@ fun HomeScreen(
                         .padding(
                             start = dimensionResource(id = R.dimen.margin_size_small),
                             top = dimensionResource(id = R.dimen.page_margin_top)
-                        )
+                        ).testTag("greeting")
                 )
                 Text(
                     text = stringResource(id = R.string.default_name),
@@ -106,16 +109,18 @@ fun HomeScreen(
                         .padding(
                             start = dimensionResource(id = R.dimen.margin_size_small)
                         )
+                        .testTag("username")
                 )
             }
             OutlinedButton(
-                onClick = { /*TODO*/ },
+                onClick = toSearchScreen,
                 modifier = Modifier
                     .padding(
                         end = dimensionResource(id = R.dimen.margin_size_small),
                         top = dimensionResource(id = R.dimen.page_margin_top)
                     )
-                    .size(dimensionResource(id = R.dimen.icon_size_medium)),
+                    .size(dimensionResource(id = R.dimen.icon_size_medium))
+                    .testTag("searchButton"),
                 contentPadding = PaddingValues(0.dp),
                 shape = CircleShape,
                 colors = ButtonDefaults.outlinedButtonColors(colorResource(id = R.color.white))
@@ -201,33 +206,33 @@ fun LazyRowFavourite(
             .padding(
                 start = dimensionResource(id = R.dimen.page_margin_start_end),
                 top = dimensionResource(id = R.dimen.rv_favorite_margin)
-            )
+            ).testTag("favoriteList"),
+
     ) {
         itemsIndexed(data) { index, item ->
             if (index == 0) {
-                ItemFavourite(item = item, modifier = Modifier) {}
+                ItemFavourite(item = item, modifier = Modifier, onClick)
             } else {
                 val modifierInner = Modifier
                     .padding(start = dimensionResource(id = R.dimen.margin_size_small))
                 ItemFavourite(item = item, modifier = modifierInner, onClick)
             }
         }
-        if (data.isNotEmpty()) {
-            item(1) {
-                Column(
-                    modifier = Modifier
-                        .width(dimensionResource(id = R.dimen.item_favorite_width))
-                        .height(dimensionResource(id = R.dimen.item_favorite_height)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+
+        item(1) {
+            Column(
+                modifier = Modifier
+                    .width(dimensionResource(id = R.dimen.item_favorite_width))
+                    .height(dimensionResource(id = R.dimen.item_favorite_height)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                OutlinedButton(
+                    onClick = { /*TODO*/ },
+                    border = BorderStroke(1.dp, Color.Blue),
+                    shape = RoundedCornerShape(ROUNDED_SHAPE_SIZE)
                 ) {
-                    OutlinedButton(
-                        onClick = { /*TODO*/ },
-                        border = BorderStroke(1.dp, Color.Blue),
-                        shape = RoundedCornerShape(ROUNDED_SHAPE_SIZE)
-                    ) {
-                        Text(text = stringResource(id = R.string.see_all))
-                    }
+                    Text(text = stringResource(id = R.string.see_all))
                 }
             }
         }
@@ -284,33 +289,38 @@ fun LazyColumnStaff(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxHeight()
+            .fillMaxSize()
             .padding(
                 start = dimensionResource(id = R.dimen.page_margin_start_end),
                 top = dimensionResource(id = R.dimen.rv_favorite_margin),
                 end = dimensionResource(id = R.dimen.page_margin_start_end)
-            )
+            ).testTag("staffList")
     ) {
-        items(data) {
-            ItemStaff(
-                item = it,
-                onBookmarkClicked = onBookmarkClicked,
-                onPosterClick = onPosterClick
-            )
-        }
+        items(
+            count = data.size,
+            key = { data[it].id },
+            itemContent = {
+                ItemStaff(
+                    item = data[it],
+                    onBookmarkClicked = onBookmarkClicked,
+                    onPosterClick = onPosterClick,
+                    tag = it
+                )
+            }
+        )
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemStaff(
     item: MovieItemCompact,
     onBookmarkClicked: (MovieItemCompact) -> Unit,
-    onPosterClick: (Int) -> Unit
+    onPosterClick: (Int) -> Unit,
+    tag: Int
 ) {
     ConstraintLayout(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(top = 8.dp, bottom = 8.dp)
     ) {
         val (posterRef, yearRef, titleRef) = createRefs()
@@ -329,6 +339,7 @@ fun ItemStaff(
                 .height(dimensionResource(id = R.dimen.poster_height))
                 .clip(RoundedCornerShape(dimensionResource(id = R.dimen.btn_corner_radius)))
                 .clickable { onPosterClick(item.id) }
+                .testTag("image$tag")
         )
 
         Text(

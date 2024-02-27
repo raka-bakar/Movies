@@ -15,6 +15,7 @@ import com.raka.movies.ui.detail.DetailViewModel
 import com.raka.movies.ui.home.HomeScreen
 import com.raka.movies.ui.home.HomeViewModel
 import com.raka.movies.ui.navigation.MainNavigation.Detail.navigateTo
+import com.raka.movies.ui.navigation.MainNavigation.Search.navigateToSearch
 import com.raka.movies.ui.search.SearchScreen
 import com.raka.movies.ui.search.SearchViewModel
 
@@ -49,7 +50,8 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
                 HomeScreen(
                     callResultFavorite = favoCallResult,
                     callResultStaff = staffCallResult,
-                    onBookmarkClicked = viewModel::onBookmarkClicked
+                    onBookmarkClicked = viewModel::onBookmarkClicked,
+                    toSearchScreen = { controller.navigateToSearch() }
                 ) {
                     controller.navigateTo(idMovie = it)
                 }
@@ -70,7 +72,7 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
             navigate(route = "$route/$idMovie")
         }
 
-        override fun getArguments() = listOf(navArgument(ArgKeys.ID_MOVIE) {
+        override fun getArguments() = listOf (navArgument(ArgKeys.ID_MOVIE) {
             type = NavType.IntType
             defaultValue = 0
         })
@@ -86,6 +88,10 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
     }
 
     object Search : MainNavigation("SEARCH_SCREEN") {
+
+        fun NavController.navigateToSearch() {
+            navigate(route)
+        }
         context(NavGraphBuilder) override fun compose(controller: NavController) {
             composable(route = getFullRoute(), arguments = getArguments()) {
                 val viewModel: SearchViewModel = hiltViewModel()
