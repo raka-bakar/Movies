@@ -72,10 +72,12 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
             navigate(route = "$route/$idMovie")
         }
 
-        override fun getArguments() = listOf (navArgument(ArgKeys.ID_MOVIE) {
-            type = NavType.IntType
-            defaultValue = 0
-        })
+        override fun getArguments() = listOf(
+            navArgument(ArgKeys.ID_MOVIE) {
+                type = NavType.IntType
+                defaultValue = 0
+            }
+        )
 
         context(NavGraphBuilder)
         override fun compose(controller: NavController) {
@@ -92,10 +94,23 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
         fun NavController.navigateToSearch() {
             navigate(route)
         }
+
         context(NavGraphBuilder) override fun compose(controller: NavController) {
             composable(route = getFullRoute(), arguments = getArguments()) {
                 val viewModel: SearchViewModel = hiltViewModel()
-                SearchScreen()
+                val searchText by viewModel.searchText.collectAsStateWithLifecycle()
+                val isSearching by viewModel.isSearching.collectAsStateWithLifecycle()
+                val callResult by viewModel.movieList.data.collectAsStateWithLifecycle(
+                    initialValue = CallResult.Initial()
+                )
+                SearchScreen(
+                    callResult = callResult,
+                    searchText = searchText,
+                    onSearchTextChange = viewModel::onSearchTextChange,
+                    isSearching = isSearching,
+                    onToggleSearch = viewModel::onToggleSearch,
+                    onBackPressed = { controller.popBackStack() }
+                )
             }
         }
     }

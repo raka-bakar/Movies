@@ -1,9 +1,7 @@
 package com.raka.movies.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ButtonDefaults
@@ -32,25 +27,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import coil.compose.AsyncImage
 import com.movies.data.CallResult
 import com.raka.movies.R
 import com.raka.movies.model.MovieItemCompact
-import com.raka.movies.ui.component.RatingStar
+import com.raka.movies.ui.component.ItemFavourite
+import com.raka.movies.ui.component.ItemStaff
 import com.raka.movies.utils.Utils
 import timber.log.Timber
 
@@ -99,7 +89,8 @@ fun HomeScreen(
                         .padding(
                             start = dimensionResource(id = R.dimen.margin_size_small),
                             top = dimensionResource(id = R.dimen.page_margin_top)
-                        ).testTag("greeting")
+                        )
+                        .testTag("greeting")
                 )
                 Text(
                     text = stringResource(id = R.string.default_name),
@@ -206,9 +197,10 @@ fun LazyRowFavourite(
             .padding(
                 start = dimensionResource(id = R.dimen.page_margin_start_end),
                 top = dimensionResource(id = R.dimen.rv_favorite_margin)
-            ).testTag("favoriteList"),
+            )
+            .testTag("favoriteList"),
 
-    ) {
+        ) {
         itemsIndexed(data) { index, item ->
             if (index == 0) {
                 ItemFavourite(item = item, modifier = Modifier, onClick)
@@ -236,24 +228,6 @@ fun LazyRowFavourite(
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun ItemFavourite(item: MovieItemCompact, modifier: Modifier, onClick: (Int) -> Unit) {
-    Card(
-        onClick = { onClick(item.id) },
-        modifier = Modifier
-            .then(modifier)
-            .width(dimensionResource(id = R.dimen.item_favorite_width))
-            .height(dimensionResource(id = R.dimen.item_favorite_height))
-            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.rating_detail_margin)))
-    ) {
-        AsyncImage(
-            model = item.posterUrl,
-            contentDescription = null,
-        )
     }
 }
 
@@ -294,7 +268,8 @@ fun LazyColumnStaff(
                 start = dimensionResource(id = R.dimen.page_margin_start_end),
                 top = dimensionResource(id = R.dimen.rv_favorite_margin),
                 end = dimensionResource(id = R.dimen.page_margin_start_end)
-            ).testTag("staffList")
+            )
+            .testTag("staffList")
     ) {
         items(
             count = data.size,
@@ -308,99 +283,5 @@ fun LazyColumnStaff(
                 )
             }
         )
-    }
-}
-
-@Composable
-fun ItemStaff(
-    item: MovieItemCompact,
-    onBookmarkClicked: (MovieItemCompact) -> Unit,
-    onPosterClick: (Int) -> Unit,
-    tag: Int
-) {
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, bottom = 8.dp)
-    ) {
-        val (posterRef, yearRef, titleRef) = createRefs()
-        val (ratingRef, buttonRef) = createRefs()
-
-        AsyncImage(
-            model = item.posterUrl,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .constrainAs(posterRef) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-                .width(dimensionResource(id = R.dimen.poster_width))
-                .height(dimensionResource(id = R.dimen.poster_height))
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.btn_corner_radius)))
-                .clickable { onPosterClick(item.id) }
-                .testTag("image$tag")
-        )
-
-        Text(
-            text = item.releaseDate ?: "",
-            color = Color.Gray,
-            modifier = Modifier
-                .constrainAs(yearRef) {
-                    top.linkTo(parent.top)
-                    start.linkTo(posterRef.end)
-                }
-                .padding(
-                    top = dimensionResource(id = R.dimen.rv_favorite_margin),
-                    start = dimensionResource(id = R.dimen.text_year_margin_start)
-                )
-        )
-        Text(
-            text = item.title,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .constrainAs(titleRef) {
-                    top.linkTo(yearRef.bottom)
-                    start.linkTo(posterRef.end)
-                }
-                .padding(
-                    start = dimensionResource(id = R.dimen.text_year_margin_start)
-                )
-        )
-        RatingStar(
-            onStarClick = {},
-            maxRating = 5,
-            rating = item.rating ?: 0f,
-            isIndicator = true,
-            modifier = Modifier
-                .constrainAs(ratingRef) {
-                    top.linkTo(titleRef.bottom)
-                    start.linkTo(posterRef.end)
-                }
-                .padding(
-                    start = dimensionResource(id = R.dimen.text_year_margin_start)
-                )
-        )
-        val imgResource: Painter = if (item.isBookmarked) {
-            painterResource(id = R.drawable.ic_favorite_filled)
-        } else {
-            painterResource(id = R.drawable.ic_favorite_unfilled)
-        }
-        IconButton(
-            onClick = { onBookmarkClicked(item) },
-            modifier = Modifier
-                .constrainAs(buttonRef) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                }
-                .padding(top = 18.dp)
-        ) {
-            Icon(
-                painter = imgResource,
-                contentDescription = stringResource(id = R.string.image_desc),
-                tint = Color.Unspecified
-            )
-        }
     }
 }

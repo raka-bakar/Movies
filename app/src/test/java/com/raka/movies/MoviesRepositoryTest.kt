@@ -127,7 +127,7 @@ class MoviesRepositoryTest {
                 dataProvider.getBookmarkedMovies()
             ).thenReturn(flow { emit(CallResult.Success(listOf(dbMovie))) })
 
-            val result = sut.getMoviesList()
+            val result = sut.getMoviesList("")
             result.collect {
                 Assert.assertEquals(1, it.data?.get(0)?.id)
                 Assert.assertEquals("title", it.data?.get(0)?.title)
@@ -141,7 +141,7 @@ class MoviesRepositoryTest {
                 dataProvider.getMovies()
             ).thenReturn(listOf())
 
-            val result = sut.getMoviesList()
+            val result = sut.getMoviesList("")
             result.collect {
                 Assert.assertEquals(null, it.data)
             }

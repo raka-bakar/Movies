@@ -23,9 +23,10 @@ interface MoviesRepository {
 
     /**
      * get a list of All Movies
+     ** @param searchText to search title of movie
      * @return a flow of list of MoviesItem
      */
-    fun getMoviesList(): Flow<CallResult<List<MovieItemCompact>>>
+    fun getMoviesList(searchText: String): Flow<CallResult<List<MovieItemCompact>>>
 
     /**
      * get a list of Staff Picks of Movies
@@ -81,18 +82,25 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMoviesList(): Flow<CallResult<List<MovieItemCompact>>> =
+    override fun getMoviesList(searchText: String): Flow<CallResult<List<MovieItemCompact>>> =
         flow {
             coroutineScope {
                 val list = dataProvider.getMovies()
+
                 if (list.isEmpty()) {
                     emit(CallResult.Error("Data is empty", null))
                 } else {
                     val compactList = Utils.toCompactList(list)
                     val compactStaffList = getStaffPicks()
-                    val allMovieList = (compactStaffList + compactList).distinctBy(
+                    var allMovieList = (compactStaffList + compactList).distinctBy(
                         MovieItemCompact::id
                     )
+
+                    if (searchText.isNotBlank()) {
+                        allMovieList = allMovieList.filter { movie ->
+                            movie.title.lowercase().contains(searchText.trim().lowercase())
+                        }
+                    }
 
                     emit(CallResult.Success(updateBookmarkStatus(allMovieList)))
                 }
@@ -101,7 +109,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override fun getMovie(movieId: Int): Flow<CallResult<MovieItemCompact>> = flow {
         coroutineScope {
-            getMoviesList().collect { result ->
+            getMoviesList("").collect { result ->
                 if (result is CallResult.Success) {
                     val item = result.data?.find { it.id == movieId }
                     if (item != null) {

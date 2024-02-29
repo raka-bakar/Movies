@@ -5,6 +5,7 @@
     <string name="see_all">See all</string>
     <string name="all_movies">All Movies</string>
     <string name="search">Search</string>
+    <string name="search_movie">Search Movie</string>
     <string name="error_message">Data not found</string>
     <string name="date_movie_detail">%s . %dh %dm </string>
     <string name="budget_currency">$ %s </string>
@@ -25,10 +26,11 @@
      <![CDATA[
   OUR <b>STAFF PICKS</b>
     ]]>
-</string>
+    </string>
     <string name="our">
     OUR
-</string><string name="staff_pick">
+</string>
+    <string name="staff_pick">
     STAFF PICK
 </string>
     <string name="image_desc">Image</string>

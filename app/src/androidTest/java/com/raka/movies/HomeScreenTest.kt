@@ -51,6 +51,8 @@ class HomeScreenTest {
         composeRule.onNodeWithTag("searchButton").performClick()
 
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("searchTitle").assertIsDisplayed()
+        composeRule.onNodeWithTag("searchTopAppBar").assertIsDisplayed()
+
+//        Espresso.pressBack()
     }
 }
