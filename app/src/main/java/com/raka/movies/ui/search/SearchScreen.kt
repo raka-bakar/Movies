@@ -34,7 +34,9 @@ fun SearchScreen(
     onSearchTextChange: (String) -> Unit,
     isSearching: Boolean,
     onToggleSearch: () -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    toDetailScreen: (Int) -> Unit,
+    onBookmarkClicked: (MovieItemCompact) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         CenterAlignedTopAppBar(
@@ -71,14 +73,15 @@ fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .testTag("searchBar")
             ) {
                 when (callResult) {
                     is CallResult.Success -> {
                         callResult.data?.let { data ->
                             LazyColumnStaff(
                                 data = data,
-                                onBookmarkClicked = {},
-                                onPosterClick = {}
+                                onBookmarkClicked = onBookmarkClicked,
+                                onPosterClick = toDetailScreen
                             )
                         }
                     }

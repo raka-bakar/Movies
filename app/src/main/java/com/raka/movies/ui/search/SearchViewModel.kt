@@ -61,6 +61,7 @@ class SearchViewModel @Inject constructor(
             } else {
                 unbookmarkMovieUseCase.unBookmarkMovie(movie)
             }
+            movieList.refresh()
         }
     }
 }

@@ -109,7 +109,9 @@ sealed class MainNavigation(override val route: String) : Navigation(route) {
                     onSearchTextChange = viewModel::onSearchTextChange,
                     isSearching = isSearching,
                     onToggleSearch = viewModel::onToggleSearch,
-                    onBackPressed = { controller.popBackStack() }
+                    onBackPressed = { controller.popBackStack() },
+                    onBookmarkClicked = viewModel::onBookmarkClicked,
+                    toDetailScreen = { controller.navigateTo(it) }
                 )
             }
         }
