@@ -26,8 +26,6 @@ techstack :
 10. Timber
 
 Screenshots : 
-
-![alt text](https://github.com/raka-bakar/StarWarsWiki/blob/main/Screenshot_sw1.png)
-![alt text](https://github.com/raka-bakar/StarWarsWiki/blob/main/Screenshot_sw2.png)
-![alt text](https://github.com/raka-bakar/StarWarsWiki/blob/main/Screenshot_sw3.png)
-![alt text](https://github.com/raka-bakar/StarWarsWiki/blob/main/Screenshot_sw4.png)
+![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055822.png)
+![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055829.png)
+![alt text](https://github.com/raka-bakar/Movies/blob/main/Screenshot_20240220-055840.png)
